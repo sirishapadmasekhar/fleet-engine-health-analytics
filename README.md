@@ -1,141 +1,217 @@
+# ✈️ Fleet Engine Health Analytics: Predictive Maintenance for Turbofan Engines
 
-# ✈️ Fleet-Level Turbofan Engine Health Analytics & Predictive Maintenance
-##  Project Overview
+## Project Overview
 
-This project develops an end-to-end engine health analytics and predictive maintenance framework using NASA’s CMAPSS turbofan engine dataset. The goal is to transform raw multivariate sensor time-series data into interpretable health indicators, failure horizon predictions, and early anomaly warnings that support condition-based maintenance and fleet-level decision-making.
+Predictive maintenance plays a critical role in aerospace systems, where unexpected engine failures can lead to significant operational costs, downtime, and safety risks. This project analyzes NASA's CMAPSS turbofan engine dataset to build an end-to-end predictive maintenance framework capable of monitoring engine health, estimating Remaining Useful Life (RUL), and identifying abnormal degradation patterns before failure occurs.
 
-The project emphasizes data understanding, feature engineering, interpretability, and realistic model evaluation, aligning with real-world aerospace and industrial asset monitoring scenarios.
+Using multivariate sensor data collected throughout an engine's lifecycle, the project transforms raw measurements into actionable maintenance insights through feature engineering, machine learning, and anomaly detection techniques.
+
+The resulting framework demonstrates how data-driven approaches can support condition-based maintenance strategies and improve fleet-level asset management.
+
+---
 
 ## Objectives
 
-- Ingest and analyze raw time-series sensor data from a fleet of turbofan engines
+* Analyze multivariate sensor data from a fleet of turbofan engines
+* Identify informative sensors and remove redundant signals
+* Engineer meaningful features that capture engine degradation
+* Develop interpretable health indicators for continuous monitoring
+* Predict Remaining Useful Life (RUL) using machine learning models
+* Detect abnormal engine behavior using unsupervised anomaly detection
+* Visualize degradation trends at both engine and fleet levels
 
-- Identify informative sensors and remove non-contributing signals
-
-- Construct interpretable engine health indicators over time
-
-- Predict Remaining Useful Life (RUL) using regression modeling
-
-- Detect abnormal degradation behavior using unsupervised anomaly detection
-
-- Visualize degradation trends at both engine and fleet levels
+---
 
 ## Dataset
 
-- Source: NASA CMAPSS Turbofan Engine Degradation Dataset
+### Source
 
-- Subset Used: FD001
+NASA CMAPSS Turbofan Engine Degradation Simulation Dataset
 
-- Single operating condition
+### Subset Used
 
-- Single fault mode (High Pressure Compressor degradation)
+FD001
 
-### Structure:
+### Dataset Characteristics
 
-- Multiple engines (fleet-level)
+* Single operating condition
+* Single fault mode
+* High Pressure Compressor (HPC) degradation
+* Multiple engines observed throughout their lifecycle
+* Multivariate sensor measurements recorded at every operational cycle
 
-- Multivariate sensor readings per operational cycle
+Each engine begins in a healthy state and operates until failure, making the dataset well-suited for predictive maintenance and Remaining Useful Life modeling.
 
-- Engines run from healthy state to failure
+---
 
-- Each engine represents an independent degradation trajectory, making the dataset ideal for predictive maintenance and Remaining Useful Life modeling.
+## Project Workflow
 
-###  Methodology
-#### Data Ingestion & Validation
+```text
+Raw Sensor Data
+        ↓
+Data Cleaning & Validation
+        ↓
+Exploratory Data Analysis
+        ↓
+Feature Engineering
+        ↓
+Health Score Generation
+        ↓
+RUL Prediction
+        ↓
+Anomaly Detection
+        ↓
+Maintenance Insights
+```
 
--  Loaded raw sensor data and assigned meaningful column names
+---
 
-- Verified number of engines, cycle lengths, and data consistency
+## Methodology
 
-- Removed empty or redundant columns
+### 1. Data Cleaning & Validation
 
-#### Exploratory Data Analysis (EDA)
+* Loaded raw engine sensor measurements
+* Assigned meaningful column names
+* Validated engine identifiers and operational cycles
+* Removed redundant and empty columns
+* Verified dataset consistency across the fleet
 
--  Analyzed cycles per engine to understand lifespan variability
+### 2. Exploratory Data Analysis (EDA)
 
-- Visualized raw sensor behavior to observe degradation patterns
+* Examined engine lifespan variability
+* Visualized sensor behavior across operational cycles
+* Analyzed degradation patterns over time
+* Calculated sensor variance to identify informative signals
+* Compared degradation trajectories across multiple engines
 
-- Computed sensor variance across the fleet to identify informative sensors
+### 3. Feature Engineering
 
-#### Feature Engineering
+To improve model performance and interpretability:
 
-- Removed low-variance sensors to reduce noise
+* Removed low-variance sensors
+* Applied z-score normalization
+* Generated rolling-window sensor averages
+* Reduced sensor noise while preserving degradation trends
+* Created a composite Engine Health Score to represent overall engine condition
 
-- Applied z-score normalization to ensure consistent feature scaling
+### 4. Engine Health Monitoring
 
-- Computed rolling mean features per engine to smooth sensor noise
+Health indicators were visualized at multiple levels:
 
-- Constructed a composite engine health score representing overall condition
+* Individual engine degradation trajectories
+* Fleet-wide health score distributions
+* Comparative health progression across engines
+* Longitudinal degradation trends
 
-#### Health Monitoring & Visualization
+These analyses reveal significant variability in degradation behavior, highlighting the importance of predictive maintenance strategies tailored to individual assets.
 
-- Engine-level degradation trends over time
+### 5. Remaining Useful Life (RUL) Prediction
 
-- Fleet-level health score distribution
+A machine learning pipeline was developed to estimate the number of operational cycles remaining before engine failure.
 
-- Comparative health trajectories across multiple engines
+Key steps included:
 
-- These visualizations reveal significant variability in degradation behavior across the fleet, motivating individualized maintenance strategies.
+* Generating RUL labels from engine failure cycles
+* Performing engine-wise train/test splitting to prevent data leakage
+* Training a Random Forest Regression model
+* Evaluating predictive performance using MAE and RMSE
+* Comparing predicted and actual RUL trajectories
 
-#### Remaining Useful Life (RUL) Modeling
+The model successfully captures degradation trends and provides useful failure horizon estimates for maintenance planning.
 
-- Derived RUL labels based on engine failure cycles
+### 6. Anomaly Detection
 
-- Used an engine-wise train/test split to prevent data leakage
+To identify abnormal engine behavior:
 
-- Trained a Random Forest regression model on rolling sensor features
+* Applied Isolation Forest on engineered sensor features
+* Detected unusual degradation patterns
+* Visualized anomalies alongside engine health trajectories
+* Generated early warning indicators prior to failure
 
-- Evaluated model performance using MAE and RMSE
+Anomaly detection complements RUL prediction by providing an additional layer of maintenance intelligence.
 
-- Visualized predicted vs actual RUL for individual engines
+---
 
--  The model accurately tracks degradation trends and estimates failure horizons, particularly during late-life stages critical for maintenance planning.
+## Key Results
 
-#### Anomaly Detection
+* Generated interpretable engine health trajectories
+* Successfully predicted Remaining Useful Life using machine learning
+* Detected abnormal operating behavior during advanced degradation stages
+* Demonstrated variability in degradation patterns across the fleet
+* Showed how sensor-driven analytics can support condition-based maintenance decisions
 
-- Applied Isolation Forest on rolling sensor features
+---
 
-- Identified abnormal behavior during late-stage degradation
+## Technologies Used
 
-- Visualized anomalies overlaid on engine health trajectories
+* Python
+* Pandas
+* NumPy
+* Matplotlib
+* Scikit-learn
+* Random Forest Regression
+* Isolation Forest
+* Time Series Analysis
 
-- Anomaly detection complements RUL prediction by providing early warning signals prior to failure.
+---
 
-### Key Results
+## Repository Structure
 
-- Clear, interpretable engine health trajectories
+```text
+fleet-engine-health-analytics/
+│
+├── 01_data_exploration.ipynb
+├── data/
+├── images/
+├── README.md
+└── requirements.txt
+```
 
-- Realistic RUL prediction with engine-wise generalization
+---
 
-- Anomalies detected primarily during severe degradation phases
+## How to Run
 
-- Demonstrated variability in degradation patterns across the fleet
+### Clone the Repository
 
+```bash
+git clone https://github.com/yourusername/fleet-engine-health-analytics.git
+cd fleet-engine-health-analytics
+```
 
-### How to Run
+### Create a Virtual Environment
 
-- Clone the repository
+```bash
+python -m venv venv
+source venv/bin/activate
+```
 
-- Create and activate a Python virtual environment
+### Install Dependencies
 
-- Install required libraries:
+```bash
+pip install pandas numpy matplotlib scikit-learn
+```
 
-          pip install pandas numpy matplotlib scikit-learn
+### Launch the Notebook
 
+```bash
+jupyter notebook 01_data_exploration.ipynb
+```
 
-- Open and run 01_data_exploration.ipynb
+---
 
-### Future Work
+## Future Improvements
 
-- Extend the framework to FD002–FD004 datasets with multiple operating conditions and fault modes
+* Extend analysis to FD002–FD004 operating conditions
+* Compare additional machine learning models (XGBoost, LightGBM)
+* Implement deep learning approaches such as LSTM and GRU networks
+* Add uncertainty estimation for RUL predictions
+* Develop an interactive dashboard for fleet monitoring
+* Simulate real-time maintenance alerts and decision support systems
 
-- Incorporate sequence-based deep learning models (LSTM/GRU)
+---
 
-- Add uncertainty estimation for RUL predictions
+## Key Takeaway
 
-- Explore real-time monitoring and alerting simulations
+This project demonstrates how raw turbofan engine sensor data can be transformed into actionable maintenance intelligence through data analytics and machine learning. By combining health monitoring, Remaining Useful Life prediction, and anomaly detection within a unified framework, the project illustrates practical techniques used in modern predictive maintenance systems across aerospace and industrial applications.
 
-### Key Takeaway
-
-This project demonstrates how raw sensor data can be transformed into actionable maintenance intelligence, combining health monitoring, failure horizon prediction, and anomaly detection within a unified, interpretable framework suitable for real-world aerospace applications.
 
